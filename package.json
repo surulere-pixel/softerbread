@@ -1,0 +1,14 @@
+{
+  "name": "softerbread",
+  "version": "0.1.0",
+  "private": true,
+  "description": "softerbread — a birthright labs venture. standalone site.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler pages dev ./public"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

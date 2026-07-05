@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "softerbread",
+  "main": "src/index.js",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
+    { "pattern": "softerbread.org", "custom_domain": true },
+    { "pattern": "www.softerbread.org", "custom_domain": true }
+  ]
+}
