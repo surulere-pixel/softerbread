@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>softerbread · fund something diagnostic</title>
+<link rel="canonical" href="https://softerbread.org/fund-something">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F1EA;--green:#28341B;--green-2:#3A4A28;--clay:#7A3A22;--clay-2:#8f4529;
+  --accent:#2F7A60;--ink:#1B201A;--ink-soft:#5C6452;--olive:#79814B;
+  --card:#FFFFFF;--line:#E4E7DA;
+}
+*{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:20px;line-height:1.45;-webkit-font-smoothing:antialiased;min-height:100vh;}
+.mono{font-family:"IBM Plex Mono",monospace;}
+button{cursor:pointer;border:none;font-family:inherit;}
+a{color:inherit;text-decoration:none;}
+
+.shell{max-width:680px;margin:0 auto;padding:32px 22px 60px;}
+.bar{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:34px;gap:12px;}
+.lineage{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--olive);}
+.wm{font-weight:700;font-size:20px;}
+
+.screen{display:none;animation:fadeUp .35s ease both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+.intro-icon{width:72px;height:72px;border-radius:20px;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;color:#fff;margin-bottom:22px;}
+.intro-icon svg{width:36px;height:36px;}
+.intro h1{font-size:clamp(34px,7vw,56px);line-height:1.02;letter-spacing:-.4px;font-weight:600;}
+.intro .sub{font-size:22px;color:var(--ink-soft);margin:14px 0 10px;max-width:32ch;}
+.intro .detail{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);line-height:1.7;margin:18px 0 0;}
+.intro .detail span{display:block;margin-bottom:4px;}
+.go{display:inline-flex;align-items:center;gap:8px;margin-top:30px;padding:16px 28px;border-radius:12px;background:var(--green);color:#F4F5EE;font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:background .15s;}
+.go:hover{background:var(--green-2);}
+.intro-sponsor{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:36px;padding-top:20px;border-top:1px solid var(--line);text-align:center;line-height:2.2;}
+.intro-sponsor em{font-style:italic;font-weight:400;text-transform:none;letter-spacing:.04em;font-size:10.5px;color:var(--ink);font-family:"Cormorant Garamond",serif;}
+
+.q-progress{display:flex;gap:5px;margin-bottom:28px;}
+.q-dot{width:100%;height:5px;border-radius:99px;background:var(--line);transition:background .2s;}
+.q-dot.done{background:var(--olive);}
+.q-dot.now{background:var(--green);}
+.q-num{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:8px;}
+.q-text{font-size:clamp(26px,5vw,38px);font-weight:600;line-height:1.12;margin-bottom:26px;}
+.opts{display:flex;flex-direction:column;gap:10px;}
+.opt{display:flex;align-items:center;gap:14px;padding:17px 18px;border-radius:12px;background:var(--card);border:2px solid var(--line);font-size:18px;text-align:left;transition:border-color .15s,background .15s;line-height:1.35;}
+.opt:hover{border-color:var(--olive);background:#F7F8F2;}
+.opt.picked{border-color:var(--green);background:#EEF1E5;}
+.opt-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;}
+.opt.picked .opt-dot{border-color:var(--green);background:var(--green);}
+.opt.picked .opt-dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;}
+
+.result-band{background:var(--green);color:#F2F3EC;border-radius:20px;padding:clamp(26px,5vw,44px);margin-bottom:20px;}
+.result-band .eye{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#C7CD93;margin-bottom:12px;}
+.stage{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);background:#C7CD93;padding:5px 11px;border-radius:99px;margin-bottom:14px;}
+.result-band h2{font-size:clamp(28px,5vw,42px);line-height:1.06;margin-bottom:14px;font-weight:600;}
+.scoreline{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#C7CD93;margin-bottom:8px;}
+.score-big{font-size:46px;font-weight:700;line-height:1;margin-bottom:14px;}
+.score-big small{font-size:20px;color:#A9B187;font-weight:500;}
+.meter{display:flex;align-items:center;gap:14px;margin:0 0 18px;}
+.meter-bar{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden;}
+.meter-fill{height:100%;border-radius:99px;background:var(--accent);transition:width .6s ease;}
+.verdict{font-size:19px;color:#DDE2CC;max-width:48ch;line-height:1.4;}
+
+/* signal temperature bars — replaces pass/fail */
+.signals{margin-top:24px;}
+.sig{padding:14px 0;border-top:1px solid rgba(255,255,255,.12);}
+.sig-row{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.sig-label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#A9B187;flex:1;}
+.sig-state{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#C7CD93;}
+.sig-temp{display:flex;gap:3px;align-items:center;}
+.sig-seg{width:18px;height:5px;border-radius:2px;background:rgba(255,255,255,.14);transition:background .3s ease;}
+.sig-seg.on{background:var(--accent);}
+.sig-val{font-size:17px;color:#F0F1EA;line-height:1.4;}
+
+.moves{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 8px;margin-bottom:16px;}
+.moves .h{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:14px;}
+.move{display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;}
+.move .n{width:26px;height:26px;border-radius:8px;background:var(--accent);color:#fff;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.move p{font-size:18px;line-height:1.35;}
+
+/* preview ideas — three options, two blurred */
+.ideas{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px;margin-bottom:16px;}
+.ideas .h{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:6px;}
+.ideas h3{font-size:22px;font-weight:600;margin-bottom:6px;}
+.ideas .lead{font-size:16px;color:var(--ink-soft);margin-bottom:16px;line-height:1.4;}
+.idea{display:flex;gap:12px;align-items:flex-start;padding:14px 14px;background:var(--bg);border-radius:10px;margin-bottom:10px;position:relative;overflow:hidden;}
+.idea .n{width:24px;height:24px;border-radius:7px;background:var(--accent);color:#fff;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.idea p{font-size:17px;line-height:1.35;}
+.idea.blurred p{filter:blur(5px);user-select:none;}
+.idea.blurred .n{opacity:.4;}
+.idea.blurred::after{content:"🔒  unlock to read";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:linear-gradient(0deg,rgba(240,241,234,.65),rgba(240,241,234,.45));}
+
+.lock-card{background:var(--card);border:2px solid var(--clay);border-radius:16px;padding:24px 24px;margin-bottom:16px;}
+.lock-card .h{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:8px;}
+.lock-card h3{font-size:26px;margin-bottom:6px;font-weight:600;}
+.lock-card .sub{font-size:17px;color:var(--ink-soft);margin-bottom:18px;}
+.lock-items{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.lock-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:7px 12px;border-radius:8px;background:#F0F1EA;color:var(--ink);}
+.unlock{display:flex;align-items:center;justify-content:center;width:100%;padding:16px 24px;border-radius:11px;background:var(--clay);color:#F6EFE6;font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:background .15s;text-align:center;}
+.unlock:hover{background:var(--clay-2);color:#F6EFE6;}
+
+.next{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.nx{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 18px;display:block;transition:border-color .15s,transform .15s;}
+.nx:hover{border-color:var(--olive);transform:translateY(-2px);}
+.nx .k{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--olive);margin-bottom:6px;}
+.nx .price{font-size:24px;font-weight:600;margin-bottom:4px;}
+.nx .pname{font-size:16px;color:var(--ink-soft);}
+.nx .arr{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin-top:10px;text-transform:uppercase;}
+.handoff{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);text-align:center;margin-bottom:22px;letter-spacing:.03em;line-height:1.7;}
+.handoff b{color:var(--olive);font-weight:600;}
+.handoff em{display:block;font-style:italic;color:var(--ink);font-family:"Cormorant Garamond",serif;font-size:17px;margin-top:6px;letter-spacing:0;}
+
+/* cross-path footer */
+.crosspath{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px;margin-bottom:16px;text-align:center;}
+.crosspath .h{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:14px;}
+.crosspath .ps{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.crosspath a{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.05em;color:var(--ink);padding:11px 16px;border:1px solid var(--line);border-radius:10px;transition:all .15s;font-weight:500;}
+.crosspath a:hover{border-color:var(--accent);background:var(--bg);}
+.crosspath .ps-divider{height:1px;background:var(--line);margin:18px auto 18px;max-width:80%;}
+.crosspath .ps-pantry{display:inline-flex;flex-direction:column;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink);font-weight:600;padding:11px 18px;border:1px solid var(--line);border-radius:10px;transition:all .15s;line-height:1.5;}
+.crosspath .ps-pantry:hover{border-color:var(--clay);background:var(--bg);}
+.crosspath .ps-pantry-sub{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);font-weight:400;text-transform:uppercase;margin-top:3px;}
+.next-intro{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--olive);text-align:center;margin-bottom:12px;}
+
+.sponsor{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);padding:24px 0 12px;border-top:1px solid var(--line);line-height:2.2;}
+.sponsor em{font-style:italic;font-weight:400;text-transform:none;letter-spacing:.04em;font-size:10.5px;color:var(--ink);font-family:"Cormorant Garamond",serif;}
+.restart{display:inline-flex;align-items:center;gap:6px;padding:12px 20px;border-radius:10px;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:14px;transition:background .15s;}
+.restart:hover{background:#E4E7DA;}
+
+@media(max-width:520px){.next{grid-template-columns:1fr;} .shell{padding:24px 18px 50px;} .opt{font-size:17px;padding:15px 16px;} .lock-card,.ideas,.moves,.crosspath{padding:20px 18px;} .sig-row{flex-wrap:wrap;}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+
+/* ── birthright labs venture wrap ── */
+.brl-wrap{background:var(--bg);border-top:1px solid var(--line);padding:clamp(54px,7vw,80px) 0;font-family:"IBM Plex Mono",monospace;}
+.brl-inner{max-width:1060px;margin:0 auto;padding:0 26px;}
+.brl-belief{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3.6vw,42px);font-weight:700;letter-spacing:-.3px;margin:0 0 30px;color:var(--ink);line-height:1;}
+.brl-id{display:flex;align-items:center;gap:14px;margin-bottom:36px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid var(--line);}
+.brl-pill{display:inline-flex;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:5px 12px;border-radius:99px;background:#E1EBD0;color:#3a4a28;}
+.brl-id .brl-sub{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:lowercase;}
+.brl-id .brl-link-tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;margin-left:auto;font-weight:600;transition:border-color .15s;}
+.brl-id .brl-link-tag:hover{border-color:var(--clay);}
+.brl-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-bottom:38px;padding-bottom:34px;border-bottom:1px solid var(--line);}
+.brl-block .brl-h{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:10px;}
+.brl-block p{font-family:"Cormorant Garamond",serif;font-size:18px;line-height:1.5;color:var(--ink-soft);margin:0 0 14px;max-width:46ch;font-style:italic;}
+.brl-link{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;transition:all .15s;display:inline-block;}
+.brl-link:hover{color:var(--clay);border-color:var(--clay);}
+.brl-legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brl-legal p{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);margin:0;line-height:1.7;}
+.brl-legal a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;transition:border-color .15s;}
+.brl-legal a:hover{border-color:var(--olive);}
+@media (max-width:680px){.brl-grid{grid-template-columns:1fr;gap:28px;}.brl-legal{flex-direction:column;gap:8px;}.brl-id .brl-link-tag{margin-left:0;width:100%;text-align:left;}}
+
+/* ── sticky nav (matches homepage) ── */
+.sb-nav{position:sticky;top:0;z-index:50;background:rgba(240,241,234,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+.sb-nav-in{max-width:1100px;margin:0 auto;padding:14px 26px;display:flex;justify-content:space-between;align-items:center;gap:20px;}
+.sb-brand{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;letter-spacing:-.2px;color:var(--ink);text-decoration:none;}
+.sb-brand:hover{color:var(--clay);}
+.sb-links{display:flex;gap:22px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
+.sb-links a{color:var(--ink-soft);text-decoration:none;transition:color .15s;padding:6px 0;}
+.sb-links a:hover{color:var(--ink);}
+.sb-links a.active{color:var(--ink);}
+@media(max-width:720px){.sb-links{display:none;} .sb-nav-in{justify-content:flex-start;}}
+
+</style>
+</head>
+<body>
+
+<nav class="sb-nav" aria-label="primary">
+  <div class="sb-nav-in">
+    <a href="/" class="sb-brand">softerbread</a>
+    <div class="sb-links">
+      <a href="/#butter" class="active">butter</a>
+      <a href="/#bakery">bakery</a>
+      <a href="/#baked-goods">baked goods</a>
+      <a href="/#join">join</a>
+      <a href="/#support">support</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="shell">
+  <div class="bar">
+    <span class="lineage"><a href="/">softerbread</a> &middot; <a href="/#butter">butter</a></span>
+    <span class="wm">fund something</span>
+  </div>
+
+  <div class="screen active" id="intro">
+    <div class="intro">
+      <span class="intro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.6 9.2c-.4-.9-1.4-1.4-2.6-1.4-1.5 0-2.6.8-2.6 2 0 2.8 5.4 1.3 5.4 4.2 0 1.2-1.2 2-2.8 2-1.3 0-2.4-.6-2.7-1.6"/></svg></span>
+      <h1>fund something diagnostic</h1>
+      <p class="sub">8 questions. 2 minutes. free.</p>
+      <div class="detail">
+        <span>see where you stand right now.</span>
+        <span>get your momentum score and your next 3 moves.</span>
+        <span>unlock your action plan for $5.40.</span>
+      </div>
+      <button class="go" onclick="startQuiz()">begin &rarr;</button>
+      <div class="intro-sponsor">free to access<br>built by softerbread cooperative<br><em>business burdens, softened.</em></div>
+    </div>
+  </div>
+
+  <div class="screen" id="quiz">
+    <div class="q-progress" id="dots"></div>
+    <div class="q-num" id="qnum"></div>
+    <div class="q-text" id="qtext"></div>
+    <div class="opts" id="opts"></div>
+  </div>
+
+  <div class="screen" id="result"></div>
+</div>
+
+<script>
+const DIAG = {
+  "slug": "fund-something",
+  "title": "fund something",
+  "color": "#2F7A60",
+  "checkoutUrls":{"actionPlan":"/#support","pack":"/#support","build":"/#support"},
+  "actionPlan": {
+    "name": "fund something action plan",
+    "price": "$5.40"
+  },
+  "pack": {
+    "name": "fund something pack",
+    "price": "$54"
+  },
+  "build": {
+    "name": "funding build",
+    "price": "$540"
+  },
+  "pairsWith": "mmaadd publishing + founder story + community history",
+  "pairsLine": "your story is a funding asset.",
+  "otherPaths": [
+    {
+      "title": "start something",
+      "slug": "start-something"
+    },
+    {
+      "title": "sell something",
+      "slug": "sell-something"
+    }
+  ],
+  "questions": [
+    {
+      "q": "what do you need funding for?",
+      "opts": [
+        {
+          "t": "a clear project or program",
+          "s": 3
+        },
+        {
+          "t": "growing something that works",
+          "s": 3
+        },
+        {
+          "t": "an idea still forming",
+          "s": 1
+        },
+        {
+          "t": "not sure yet",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "can you say what the money is for?",
+      "opts": [
+        {
+          "t": "yes — a specific use",
+          "s": 3
+        },
+        {
+          "t": "roughly",
+          "s": 2
+        },
+        {
+          "t": "not really",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "do you have a story for why it matters?",
+      "opts": [
+        {
+          "t": "yes — clear and true",
+          "s": 3
+        },
+        {
+          "t": "parts of one",
+          "s": 2
+        },
+        {
+          "t": "not yet",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "do you know who might fund it?",
+      "opts": [
+        {
+          "t": "yes — specific funders or sponsors",
+          "s": 3
+        },
+        {
+          "t": "a vague sense",
+          "s": 2
+        },
+        {
+          "t": "no idea",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "do you have any numbers?",
+      "opts": [
+        {
+          "t": "yes — a budget",
+          "s": 3
+        },
+        {
+          "t": "rough figures",
+          "s": 2
+        },
+        {
+          "t": "none yet",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "have you raised or been funded before?",
+      "opts": [
+        {
+          "t": "yes",
+          "s": 3
+        },
+        {
+          "t": "once",
+          "s": 2
+        },
+        {
+          "t": "never",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "do you have documents ready?",
+      "opts": [
+        {
+          "t": "yes — organized",
+          "s": 3
+        },
+        {
+          "t": "some",
+          "s": 2
+        },
+        {
+          "t": "none",
+          "s": 1
+        }
+      ]
+    },
+    {
+      "q": "what's blocking you most?",
+      "opts": [
+        {
+          "t": "i don't know who to ask",
+          "s": 1
+        },
+        {
+          "t": "i don't know how to ask",
+          "s": 1
+        },
+        {
+          "t": "i don't have the documents",
+          "s": 1
+        },
+        {
+          "t": "i just need it organized",
+          "s": 2
+        }
+      ]
+    }
+  ],
+  "verdicts": [
+    {
+      "max": 13,
+      "label": "story stage",
+      "line": "your story is a funding asset — let's shape it.",
+      "detail": "we noticed the need is real, but the case isn't built yet. the first move is the story: why it matters, what the money is for, and who might give it.",
+      "moves": [
+        "write why this matters in 3 sentences",
+        "name exactly what the money is for",
+        "list 5 possible funders or sponsors"
+      ]
+    },
+    {
+      "max": 19,
+      "label": "readiness stage",
+      "line": "you're more fundable than you feel.",
+      "detail": "we noticed you have a story and a sense of the need. now it needs a budget, a clear use of funds, and the documents that make a yes easy.",
+      "moves": [
+        "draft a simple budget and use-of-funds",
+        "build a one-page ask",
+        "gather your core documents"
+      ]
+    },
+    {
+      "max": 24,
+      "label": "ask ready",
+      "line": "you're ready to ask.",
+      "detail": "we noticed the story, the numbers, and the targets are in place. now finalize the ask, build the list, and start reaching out.",
+      "moves": [
+        "finalize your one-page ask",
+        "build your outreach list",
+        "send the first messages"
+      ]
+    }
+  ],
+  "abridgedSignals": [
+    {
+      "key": "what it's for",
+      "fromQ": 0,
+      "strong": "the project or growth is clear",
+      "forming": "close, still defining",
+      "weak": "what it funds is still forming"
+    },
+    {
+      "key": "use of funds",
+      "fromQ": 1,
+      "strong": "the use is specific",
+      "forming": "roughly defined",
+      "weak": "what it's for is fuzzy"
+    },
+    {
+      "key": "story",
+      "fromQ": 2,
+      "strong": "you have a clear story",
+      "forming": "parts of one",
+      "weak": "the story still needs shaping"
+    },
+    {
+      "key": "funder fit",
+      "fromQ": 3,
+      "strong": "you know who to ask",
+      "forming": "a vague sense",
+      "weak": "no funder targets yet"
+    },
+    {
+      "key": "budget",
+      "fromQ": 4,
+      "strong": "you have a budget",
+      "forming": "rough figures",
+      "weak": "no numbers yet"
+    }
+  ],
+  "unlockItems": [
+    "your momentum score",
+    "what's working",
+    "what's still forming",
+    "your next 3 moves",
+    "what to ask for first",
+    "recommended $54 pack",
+    "recommended $540 build",
+    "mmaadd studio handoff",
+    "downloadable + email version"
+  ],
+  "ideasTitle": "three asks we'd line up first",
+  "ideasLead": "based on what we noticed, here's where we'd start the conversation.",
+  "previewIdeas": [
+    "a small, specific ask to one local funder or sponsor whose mission already overlaps with the work you're doing.",
+    "a community capital round — small contributions from the people you already serve, know, or have built trust with.",
+    "a partnership ask that isn't money — resources, space, distribution, or co-signers from a bigger organization aligned with the work."
+  ]
+};
+
+let qi = 0, answers = [];
+const STATE_NAMES = {3:'strong', 2:'forming', 1:'early'};
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id); void el.offsetWidth; el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function startQuiz(){ qi=0; answers=[]; renderQ(); show('quiz'); }
+function renderQ(){
+  const qs=DIAG.questions;
+  document.getElementById('dots').innerHTML = qs.map((_,i)=>`<div class="q-dot ${i<qi?'done':''} ${i===qi?'now':''}"></div>`).join('');
+  document.getElementById('qnum').textContent = `question ${qi+1} of ${qs.length}`;
+  document.getElementById('qtext').textContent = qs[qi].q;
+  document.getElementById('opts').innerHTML = qs[qi].opts.map((o,oi)=>`<button class="opt" onclick="pick(${oi})"><span class="opt-dot"></span>${o.t}</button>`).join('');
+}
+function pick(oi){
+  answers.push(DIAG.questions[qi].opts[oi].s);
+  document.querySelectorAll('.opt').forEach((b,i)=>{ b.classList.toggle('picked',i===oi); b.style.pointerEvents='none'; });
+  setTimeout(()=>{ qi++; qi<DIAG.questions.length?renderQ():renderResult(); },350);
+}
+function signalRow(sig){
+  const score = answers[sig.fromQ] || 1;
+  const state = score === 3 ? 'strong' : score === 2 ? 'forming' : 'early';
+  const text = score === 3 ? sig.strong : score === 2 ? sig.forming : sig.weak;
+  const segs = [1,2,3].map(i=>`<span class="sig-seg ${i<=score?'on':''}"></span>`).join('');
+  return `
+    <div class="sig">
+      <div class="sig-row">
+        <div class="sig-label">${sig.key}</div>
+        <div class="sig-temp">${segs}</div>
+        <div class="sig-state">${state}</div>
+      </div>
+      <div class="sig-val">${text}</div>
+    </div>`;
+}
+function renderResult(){
+  const total=answers.reduce((a,b)=>a+b,0);
+  const max=DIAG.questions.length*3;
+  const pct=Math.round((total/max)*100);
+  const v=DIAG.verdicts.find(v=>total<=v.max)||DIAG.verdicts[DIAG.verdicts.length-1];
+  const moves=(v.moves||[]).slice(0,3);
+  const ideas=DIAG.previewIdeas||[];
+  document.getElementById('result').innerHTML = `
+    <div class="result-band">
+      <div class="eye">what we noticed</div>
+      <span class="stage">${v.label}</span>
+      <h2>${v.line}</h2>
+      <div class="scoreline">momentum score</div>
+      <div class="score-big">${pct} <small>/ 100</small></div>
+      <div class="meter"><div class="meter-bar"><div class="meter-fill" style="width:${pct}%"></div></div></div>
+      <p class="verdict">${v.detail}</p>
+      <div class="signals">
+        ${DIAG.abridgedSignals.map(signalRow).join('')}
+      </div>
+    </div>
+
+    <div class="moves">
+      <div class="h">your next 3 moves</div>
+      ${moves.map((m,i)=>`<div class="move"><span class="n">${i+1}</span><p>${m}</p></div>`).join('')}
+    </div>
+
+    <div class="ideas">
+      <div class="h">a preview</div>
+      <h3>${DIAG.ideasTitle}</h3>
+      <p class="lead">${DIAG.ideasLead}</p>
+      ${ideas.map((idea,i)=>`<div class="idea ${i>0?'blurred':''}"><span class="n">${i+1}</span><p>${idea}</p></div>`).join('')}
+    </div>
+
+    <div class="lock-card">
+      <div class="h">$5.40 &middot; ${DIAG.actionPlan.name}</div>
+      <h3>your action plan</h3>
+      <p class="sub">unlock the two ideas above and the full roadmap:</p>
+      <div class="lock-items">
+        ${DIAG.unlockItems.map(u=>`<span class="lock-chip">${u}</span>`).join('')}
+      </div>
+      <a class="unlock" href="${DIAG.checkoutUrls.actionPlan}">unlock your action plan &middot; $5.40</a>
+    </div>
+
+    <div class="next-intro">recommended next &mdash; from baked goods</div>
+    <div class="next">
+      <a class="nx" href="${DIAG.checkoutUrls.pack}">
+        <div class="k">do it yourself &middot; $54 pack</div>
+        <div class="price">${DIAG.pack.price}</div>
+        <div class="pname">${DIAG.pack.name}</div>
+        <div class="arr">get the pack &rarr;</div>
+      </a>
+      <a class="nx" href="${DIAG.checkoutUrls.build}">
+        <div class="k">go deeper &middot; $540 build</div>
+        <div class="price">${DIAG.build.price}</div>
+        <div class="pname">${DIAG.build.name}</div>
+        <div class="arr">start the build &rarr;</div>
+      </a>
+    </div>
+    <div class="handoff">
+      pairs with &rarr; <b>${DIAG.pairsWith}</b>
+      ${DIAG.pairsLine?`<em>${DIAG.pairsLine}</em>`:''}
+    </div>
+
+    <div class="crosspath">
+      <div class="h">explore another butter path</div>
+      <div class="ps">
+        ${DIAG.otherPaths.map(p=>`<a href="/${p.slug}">${p.title} &rarr;</a>`).join('')}
+      </div>
+      <div class="ps-divider"></div>
+      <a class="ps-pantry" href="/baked-goods">explore similar tools in baked goods &rarr;<span class="ps-pantry-sub">the venture library</span></a>
+    </div>
+
+    <div class="sponsor">free to access<br>built by softerbread cooperative<br><em>business burdens, softened.</em></div>
+
+    <div style="text-align:center;"><button class="restart" onclick="startQuiz()">run again &rarr;</button></div>
+  `;
+  show('result');
+}
+</script>
+<footer class="brl-wrap">
+  <div class="brl-inner">
+    <p class="brl-belief">business burdens, softened.</p>
+    <div class="brl-id">
+      <span class="brl-pill">pilot</span>
+      <span class="brl-sub">softerbread cooperative &middot; butter diagnostic &middot; fund something</span>
+      <a href="/labs" class="brl-link-tag">a birthright labs venture &rarr;</a>
+    </div>
+    <div class="brl-grid">
+      <div class="brl-block">
+        <div class="brl-h">share feedback</div>
+        <p>softerbread is in pilot. we are shaping the tools, residencies, and baked goods with the people using them.</p>
+        <a class="brl-link" href="/#support">share feedback &rarr;</a>
+      </div>
+      <div class="brl-block">
+        <div class="brl-h">support bakery</div>
+        <p>support helps young builders cover the practical costs of building &mdash; tools, workspace, technology, materials, access, and in some cases opportunity-cost support.</p>
+        <a class="brl-link" href="/#support">support a baker &rarr;</a>
+      </div>
+    </div>
+    <div class="brl-legal">
+      <p>the birthright project &middot; 501(c)(3) &middot; ein 99-3166732 &middot; financial autonomy is a human right</p>
+      <p>hello@thebirthrightproject.org &middot; <a href="https://thebirthrightproject.org">thebirthrightproject.org</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
