@@ -248,6 +248,53 @@ button{cursor:pointer;border:none;font-family:inherit;}
 .coming-cta:hover{border-color:var(--clay);color:var(--clay);}
 @media(max-width:520px){.coming-list{grid-template-columns:1fr;}}
 
+
+/* ── form accordion (join) ── */
+.acc{background:rgba(255,255,255,.04);border:1px solid rgba(231,185,140,.24);border-radius:14px;margin-top:14px;overflow:hidden;transition:border-color .18s;}
+.acc:first-of-type{margin-top:0;}
+.acc[open]{border-color:rgba(231,185,140,.42);background:rgba(255,255,255,.055);}
+.acc > summary{list-style:none;display:flex;align-items:center;gap:16px;padding:22px 24px;cursor:pointer;user-select:none;transition:background .15s;}
+.acc > summary::-webkit-details-marker{display:none;}
+.acc > summary:hover{background:rgba(255,255,255,.02);}
+.acc .acc-num{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:#E7B98C;font-weight:600;flex-shrink:0;}
+.acc .acc-title{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;color:#F8EFD9;letter-spacing:-.2px;flex:1;}
+.acc .acc-hint{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;color:rgba(231,185,140,.6);text-transform:lowercase;font-style:italic;}
+.acc .acc-arrow{font-family:"IBM Plex Mono",monospace;font-size:22px;color:#E7B98C;font-weight:400;line-height:1;transition:transform .22s ease;width:22px;text-align:center;flex-shrink:0;}
+.acc[open] > summary .acc-arrow{transform:rotate(45deg);}
+.acc .acc-body{padding:8px 24px 28px;border-top:1px solid rgba(231,185,140,.15);}
+.acc .acc-body .field:first-child,
+.acc .acc-body .two:first-child .field{margin-top:16px;}
+@media(max-width:520px){.acc > summary{padding:18px 18px;gap:12px;} .acc .acc-body{padding:6px 18px 22px;} .acc .acc-title{font-size:20px;}}
+
+/* ── support way-cards ── */
+.way-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
+.way-card{position:relative;display:flex;flex-direction:column;padding:20px 22px 20px 48px;background:rgba(255,255,255,.04);border:1px solid rgba(242,216,182,.24);border-radius:12px;cursor:pointer;transition:all .15s;}
+.way-card:hover{border-color:rgba(242,216,182,.5);background:rgba(255,255,255,.07);}
+.way-card input[type=checkbox]{position:absolute;opacity:0;width:0;height:0;pointer-events:none;}
+.way-card .way-mark{position:absolute;top:22px;left:20px;width:18px;height:18px;border:1.5px solid rgba(242,216,182,.5);border-radius:4px;transition:all .15s;}
+.way-card:has(input:checked){border-color:#F2D8B6;background:rgba(242,216,182,.09);}
+.way-card:has(input:checked) .way-mark{background:#F2D8B6;border-color:#F2D8B6;}
+.way-card:has(input:checked) .way-mark::after{content:"";position:absolute;top:2px;left:6px;width:4px;height:9px;border:solid #3a1c0e;border-width:0 2px 2px 0;transform:rotate(45deg);}
+.way-card .way-title{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:#F8EFD9;letter-spacing:-.2px;margin:0 0 6px;line-height:1.15;}
+.way-card .way-desc{font-family:"IBM Plex Mono",monospace;font-size:12px;color:rgba(242,216,182,.75);line-height:1.65;letter-spacing:.01em;}
+.way-card.way-other{border-style:dashed;}
+@media(max-width:640px){.way-grid{grid-template-columns:1fr;}}
+
+/* ── stipend slider ── */
+.slider-field{margin-top:18px;animation:slideIn .28s ease both;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+.slider-wrap{background:rgba(255,255,255,.06);border:1px solid rgba(242,216,182,.28);border-radius:12px;padding:22px 24px 18px;}
+.slider-value{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:600;letter-spacing:-.4px;color:#F8EFD9;margin-bottom:14px;line-height:1;}
+.slider-value .slider-unit{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,216,182,.6);margin-left:8px;}
+.slider-wrap input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer;height:24px;margin:0;}
+.slider-wrap input[type=range]::-webkit-slider-runnable-track{height:4px;background:rgba(242,216,182,.24);border-radius:99px;}
+.slider-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#F2D8B6;margin-top:-9px;box-shadow:0 2px 8px rgba(0,0,0,.28);cursor:grab;transition:transform .12s;}
+.slider-wrap input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.1);}
+.slider-wrap input[type=range]::-moz-range-track{height:4px;background:rgba(242,216,182,.24);border-radius:99px;}
+.slider-wrap input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#F2D8B6;border:none;box-shadow:0 2px 8px rgba(0,0,0,.28);cursor:grab;}
+.slider-scale{display:flex;justify-content:space-between;margin-top:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:rgba(242,216,182,.5);}
+.opt-tag{color:rgba(242,216,182,.55);text-transform:none;letter-spacing:.02em;font-style:italic;font-family:"Cormorant Garamond",serif;}
+
 /* ── birthright labs venture wrap ── */
 .brl-wrap{background:var(--bg);border-top:1px solid var(--line);padding:clamp(54px,7vw,80px) 0;font-family:"IBM Plex Mono",monospace;}
 .brl-inner{max-width:1100px;margin:0 auto;padding:0 26px;}
@@ -269,14 +316,6 @@ button{cursor:pointer;border:none;font-family:inherit;}
 .brl-legal a:hover{border-color:var(--olive);}
 
 
-/* ── current bakers in residence ── */
-.bakers{margin-top:14px;}
-.baker-card{display:grid;grid-template-columns:140px 1fr;gap:26px;background:rgba(255,255,255,.04);border:1px solid rgba(231,185,140,.28);border-radius:16px;padding:28px 30px;align-items:flex-start;}
-.baker-photo{width:140px;height:140px;object-fit:cover;border-radius:14px;border:1px solid rgba(231,185,140,.32);background:rgba(255,255,255,.05);}
-.baker-meta{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:#E7B98C;margin-bottom:8px;}
-.baker-name{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:600;letter-spacing:-.4px;margin:0 0 8px;color:#F8EFD9;line-height:1;}
-.baker-focus{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:19px;color:#D8C29F;line-height:1.35;margin:0 0 14px;max-width:48ch;}
-@media(max-width:640px){.baker-card{grid-template-columns:1fr;gap:16px;padding:22px;} .baker-photo{width:110px;height:110px;}}
 
 :focus-visible{outline:2px solid var(--olive);outline-offset:3px;}
 @media(max-width:900px){
@@ -350,16 +389,6 @@ button{cursor:pointer;border:none;font-family:inherit;}
         <a href="#join">apply to bakery &rarr;</a>
         <a href="#baked-goods">explore baked goods &rarr;</a>
       </div>
-    </div>
-  </section>
-
-  <!-- ── what softens ── -->
-  <section class="sec softens">
-    <div class="wrap">
-      <div class="kicker">what softerbread softens</div>
-      <h2>the part of the work that isn't <em>the work.</em></h2>
-      <p class="list"><em>pricing. words. money. asks. structure. follow-up. documents. the first step. the next step. the cost of trying.</em></p>
-      <p class="close">softerbread helps builders turn what they already know, make, sell, or imagine into something structured enough to move.</p>
     </div>
   </section>
 
@@ -440,6 +469,59 @@ button{cursor:pointer;border:none;font-family:inherit;}
           <div class="rung"><div class="verb">build</div><div class="price">$540</div><div class="name">build</div><p>owned files and structure that you keep building from.</p></div>
         </div>
         <p class="rarrow">discover &rarr; understand &rarr; prepare &rarr; build</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── bakery ── -->
+  <section class="sec sec-warm" id="bakery">
+    <div class="wrap">
+      <div class="kicker">bakery &middot; in-residence programs</div>
+      <h2>residences for young global entrepreneurs building <em>global brands.</em></h2>
+      <p class="lead">bakery is softerbread's residence layer for young builders across africa, latin america, the caribbean, and the diaspora &mdash; we call them <em>bakers in residence</em>. we support bakers turning ideas, skills, culture, and community insight into brands, tools, services, and ventures with global potential.</p>
+      <p class="lead" style="margin-top:14px;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.02em;line-height:1.75;color:#D8C29F;max-width:64ch;">bakery also supports builders connected to other birthright ventures, giving each baker access to the same practical infrastructure: room + board where available, resources, technology, access, and structure.</p>
+
+      <div class="kicker" style="margin-top:14px;">what bakery provides</div>
+      <div class="provides">
+        <div class="pcell"><div class="lbl">01 &middot; room + board</div><h4>a place to focus</h4><p>safe, stable living support where available &mdash; especially for builders who need room to work without carrying everything else.</p></div>
+        <div class="pcell"><div class="lbl">02 &middot; resources</div><h4>small grants + materials</h4><p>operating support, starter budgets, and practical materials to get the work made where available.</p></div>
+        <div class="pcell"><div class="lbl">03 &middot; technology</div><h4>tools + digital infrastructure</h4><p>access to software, ai systems, templates, hosting, and hands-on build support.</p></div>
+        <div class="pcell"><div class="lbl">04 &middot; access</div><h4>people + markets</h4><p>mentors, collaborators, operators, buyers, partners, funders, and distribution pathways.</p></div>
+        <div class="pcell"><div class="lbl">05 &middot; structure</div><h4>plans + reviews</h4><p>clear build plans, weekly and monthly milestones, venture reviews, and documentation.</p></div>
+        <div class="pcell"><div class="lbl">06 &middot; opportunity-cost support</div><h4>stipends where possible</h4><p>for young builders who would otherwise need to pause the work to support family or cover basic obligations.</p></div>
+      </div>
+
+      <div class="kicker" style="margin-top:56px;">program tracks</div>
+      <div class="tracks">
+        <article class="track">
+          <div class="role">track 01</div>
+          <h4>build <em>residence.</em></h4>
+          <p class="for">for early bakers turning an idea, skill, product, service, or creative practice into a structured venture.</p>
+          <div class="focus-lbl">focus</div>
+          <div class="focus">
+            <span class="tag">offer</span><span class="tag">audience</span><span class="tag">brand</span><span class="tag">pricing</span><span class="tag">first sales</span><span class="tag">basic operations</span><span class="tag">simple digital presence</span><span class="tag">proof of demand</span>
+          </div>
+        </article>
+        <article class="track">
+          <div class="role">track 02</div>
+          <h4>scale <em>residence.</em></h4>
+          <p class="for">for bakers with early traction who need structure, tools, capital readiness, distribution, or operational support to grow.</p>
+          <div class="focus-lbl">focus</div>
+          <div class="focus">
+            <span class="tag">revenue</span><span class="tag">systems</span><span class="tag">delivery</span><span class="tag">partnerships</span><span class="tag">funding readiness</span><span class="tag">brand expansion</span><span class="tag">documentation</span><span class="tag">replicable infrastructure</span>
+          </div>
+        </article>
+      </div>
+
+      
+      <div class="factbar">
+        <div class="fact"><div class="k">program length</div><h5>up to 18 months</h5><p>residences run up to 18 months, shaped around the builder, the venture, and the stage of work.</p></div>
+        <div class="fact"><div class="k">entry model</div><h5>rolling entry</h5><p>bakery is currently on rolling entry. we review builders as space, resources, and program fit allow.</p></div>
+      </div>
+
+      <div class="bakery-ctas">
+        <a class="b-cta primary" href="#join">apply as a baker &rarr;</a>
+        <a class="b-cta ghost" href="#support">support a baker</a>
       </div>
     </div>
   </section>
@@ -530,145 +612,116 @@ button{cursor:pointer;border:none;font-family:inherit;}
     </div>
   </section>
 
-  <!-- ── bakery ── -->
-  <section class="sec sec-warm" id="bakery">
-    <div class="wrap">
-      <div class="kicker">bakery &middot; in-residence programs</div>
-      <h2>residences for young global entrepreneurs building <em>global brands.</em></h2>
-      <p class="lead">bakery is softerbread's residence layer for young builders across africa, latin america, the caribbean, and the diaspora &mdash; we call them <em>bakers in residence</em>. we support bakers turning ideas, skills, culture, and community insight into brands, tools, services, and ventures with global potential.</p>
-      <p class="lead" style="margin-top:14px;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.02em;line-height:1.75;color:#D8C29F;max-width:64ch;">bakery also supports builders connected to other birthright ventures, giving each baker access to the same practical infrastructure: room + board where available, resources, technology, access, and structure.</p>
-
-      <div class="kicker" style="margin-top:14px;">what bakery provides</div>
-      <div class="provides">
-        <div class="pcell"><div class="lbl">01 &middot; room + board</div><h4>a place to focus</h4><p>safe, stable living support where available &mdash; especially for builders who need room to work without carrying everything else.</p></div>
-        <div class="pcell"><div class="lbl">02 &middot; resources</div><h4>small grants + materials</h4><p>operating support, starter budgets, and practical materials to get the work made where available.</p></div>
-        <div class="pcell"><div class="lbl">03 &middot; technology</div><h4>tools + digital infrastructure</h4><p>access to software, ai systems, templates, hosting, and hands-on build support.</p></div>
-        <div class="pcell"><div class="lbl">04 &middot; access</div><h4>people + markets</h4><p>mentors, collaborators, operators, buyers, partners, funders, and distribution pathways.</p></div>
-        <div class="pcell"><div class="lbl">05 &middot; structure</div><h4>plans + reviews</h4><p>clear build plans, weekly and monthly milestones, venture reviews, and documentation.</p></div>
-        <div class="pcell"><div class="lbl">06 &middot; opportunity-cost support</div><h4>stipends where possible</h4><p>for young builders who would otherwise need to pause the work to support family or cover basic obligations.</p></div>
-      </div>
-
-      <div class="kicker" style="margin-top:56px;">program tracks</div>
-      <div class="tracks">
-        <article class="track">
-          <div class="role">track 01</div>
-          <h4>build <em>residence.</em></h4>
-          <p class="for">for early bakers turning an idea, skill, product, service, or creative practice into a structured venture.</p>
-          <div class="focus-lbl">focus</div>
-          <div class="focus">
-            <span class="tag">offer</span><span class="tag">audience</span><span class="tag">brand</span><span class="tag">pricing</span><span class="tag">first sales</span><span class="tag">basic operations</span><span class="tag">simple digital presence</span><span class="tag">proof of demand</span>
-          </div>
-        </article>
-        <article class="track">
-          <div class="role">track 02</div>
-          <h4>scale <em>residence.</em></h4>
-          <p class="for">for bakers with early traction who need structure, tools, capital readiness, distribution, or operational support to grow.</p>
-          <div class="focus-lbl">focus</div>
-          <div class="focus">
-            <span class="tag">revenue</span><span class="tag">systems</span><span class="tag">delivery</span><span class="tag">partnerships</span><span class="tag">funding readiness</span><span class="tag">brand expansion</span><span class="tag">documentation</span><span class="tag">replicable infrastructure</span>
-          </div>
-        </article>
-      </div>
-
-      <!-- ═══════════════════════════════════════════════════════════════
-           current bakers in residence — hidden for v1 launch
-           re-enable when 3+ bakers are ready to feature together.
-           to restore: delete this opening comment and the closing marker below.
-           ═══════════════════════════════════════════════════════════════
-      <div class="kicker" style="margin-top:56px;">current bakers in residence</div>
-      <div class="bakers">
-        <article class="baker-card">
-          <img class="baker-photo" src="/bakers/simone.jpg" alt="simone floyd" loading="lazy">
-          <div class="baker-body">
-            <div class="baker-meta">baker in residence &middot; respira</div>
-           ═══════════════════════════════════════════════════════════════ -->
-            <h4 class="baker-name">simone floyd</h4>
-            <p class="baker-focus">voice + guidance for respira &mdash; shaping the guide layer across six languages.</p>
-            <div class="focus">
-              <span class="tag">respira</span>
-              <span class="tag">a happy sunday venture</span>
-              <span class="tag">johannesburg</span>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div class="factbar">
-        <div class="fact"><div class="k">program length</div><h5>up to 18 months</h5><p>residences run up to 18 months, shaped around the builder, the venture, and the stage of work.</p></div>
-        <div class="fact"><div class="k">entry model</div><h5>rolling entry</h5><p>bakery is currently on rolling entry. we review builders as space, resources, and program fit allow.</p></div>
-      </div>
-
-      <div class="bakery-ctas">
-        <a class="b-cta primary" href="#join">apply as a baker &rarr;</a>
-        <a class="b-cta ghost" href="#support">support a baker</a>
-      </div>
-    </div>
-  </section>
-
   <!-- ── join form (bakery apply) ── -->
   <section class="formsec form-warm" id="join">
     <div class="wrap">
       <div class="kicker">join bakery</div>
       <h2>apply as a <em>baker.</em></h2>
       <p class="lead">we review builders as space, resources, and program fit allow. tell us what you're building and what would make the next six months possible.</p>
+
       <form class="the-form" id="join-form" action="https://formspree.io/f/xjgqjodq" method="POST" onsubmit="handleForm(event,'join-msg','join')">
         <input type="hidden" name="_subject" value="softerbread — bakery application">
         <input type="hidden" name="form_source" value="bakery-apply">
-        <div class="two">
-          <div class="field"><label for="j-name">name</label><input type="text" id="j-name" name="name" required></div>
-          <div class="field"><label for="j-email">email</label><input type="email" id="j-email" name="email" required></div>
-        </div>
-        <div class="two">
-          <div class="field"><label for="j-loc">location (country / city)</label><input type="text" id="j-loc" name="location" required placeholder="lagos, ng &middot; kingston, jm"></div>
-          <div class="field">
-            <label for="j-age">age range</label>
-            <select id="j-age" name="age_range" required>
-              <option value="" disabled selected>select</option>
-              <option>under 18</option>
-              <option>18–24</option>
-              <option>25–29</option>
-              <option>30–34</option>
-              <option>35+</option>
-            </select>
+
+        <details class="acc" open>
+          <summary>
+            <span class="acc-num">01</span>
+            <span class="acc-title">about you</span>
+            <span class="acc-hint">4 fields</span>
+            <span class="acc-arrow" aria-hidden="true">+</span>
+          </summary>
+          <div class="acc-body">
+            <div class="two">
+              <div class="field"><label for="j-name">name</label><input type="text" id="j-name" name="name" required></div>
+              <div class="field"><label for="j-email">email</label><input type="email" id="j-email" name="email" required></div>
+            </div>
+            <div class="two">
+              <div class="field"><label for="j-loc">location (country / city)</label><input type="text" id="j-loc" name="location" required placeholder="lagos, ng &middot; kingston, jm"></div>
+              <div class="field">
+                <label for="j-age">age range</label>
+                <select id="j-age" name="age_range" required>
+                  <option value="" disabled selected>select</option>
+                  <option>under 18</option>
+                  <option>18–24</option>
+                  <option>25–29</option>
+                  <option>30–34</option>
+                  <option>35+</option>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="field"><label for="j-building">what are you building?</label><textarea id="j-building" name="what_building" rows="3" required placeholder="a sentence or two — the venture, the product, the practice."></textarea></div>
-        <div class="two">
-          <div class="field">
-            <label for="j-stage">what stage are you in?</label>
-            <select id="j-stage" name="stage" required>
-              <option value="" disabled selected>select</option>
-              <option>just an idea</option>
-              <option>early prototype / first version</option>
-              <option>first users / first sales</option>
-              <option>growing but scattered</option>
-              <option>ready to scale</option>
-            </select>
+        </details>
+
+        <details class="acc">
+          <summary>
+            <span class="acc-num">02</span>
+            <span class="acc-title">what you're building</span>
+            <span class="acc-hint">3 fields</span>
+            <span class="acc-arrow" aria-hidden="true">+</span>
+          </summary>
+          <div class="acc-body">
+            <div class="field"><label for="j-building">what are you building?</label><textarea id="j-building" name="what_building" rows="3" required placeholder="a sentence or two — the venture, the product, the practice."></textarea></div>
+            <div class="two">
+              <div class="field">
+                <label for="j-stage">what stage are you in?</label>
+                <select id="j-stage" name="stage" required>
+                  <option value="" disabled selected>select</option>
+                  <option>just an idea</option>
+                  <option>early prototype / first version</option>
+                  <option>first users / first sales</option>
+                  <option>growing but scattered</option>
+                  <option>ready to scale</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="j-track">which residence?</label>
+                <select id="j-track" name="track" required>
+                  <option value="" disabled selected>select</option>
+                  <option value="build">build residence</option>
+                  <option value="scale">scale residence</option>
+                  <option value="unsure">not sure yet</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="j-track">which residence?</label>
-            <select id="j-track" name="track" required>
-              <option value="" disabled selected>select</option>
-              <option value="build">build residence</option>
-              <option value="scale">scale residence</option>
-              <option value="unsure">not sure yet</option>
-            </select>
+        </details>
+
+        <details class="acc">
+          <summary>
+            <span class="acc-num">03</span>
+            <span class="acc-title">what you need</span>
+            <span class="acc-hint">3 fields</span>
+            <span class="acc-arrow" aria-hidden="true">+</span>
+          </summary>
+          <div class="acc-body">
+            <div class="field"><label for="j-support">what kind of support do you need?</label><textarea id="j-support" name="support_needed" rows="3" required placeholder="room + board, tech, mentorship, capital readiness, market access — be specific."></textarea></div>
+            <div class="field">
+              <label for="j-oc">do you need opportunity-cost support?</label>
+              <select id="j-oc" name="opportunity_cost" required>
+                <option value="" disabled selected>select</option>
+                <option value="yes">yes — a stipend would let me focus on the build</option>
+                <option value="maybe">maybe — depends on the fit</option>
+                <option value="no">no — i'm covered on the personal side</option>
+              </select>
+              <p class="helper">stipends aren't guaranteed, but we ask so we can plan and prioritize where the need is real.</p>
+            </div>
+            <div class="field"><label for="j-6mo">what would make the next 6 months possible?</label><textarea id="j-6mo" name="next_6_months" rows="3" placeholder="the thing that would change what you can build in half a year."></textarea></div>
           </div>
-        </div>
-        <div class="field"><label for="j-support">what kind of support do you need?</label><textarea id="j-support" name="support_needed" rows="3" required placeholder="room + board, tech, mentorship, capital readiness, market access — be specific."></textarea></div>
-        <div class="field">
-          <label for="j-oc">do you need opportunity-cost support?</label>
-          <select id="j-oc" name="opportunity_cost" required>
-            <option value="" disabled selected>select</option>
-            <option value="yes">yes — a stipend would let me focus on the build</option>
-            <option value="maybe">maybe — depends on the fit</option>
-            <option value="no">no — i'm covered on the personal side</option>
-          </select>
-          <p class="helper">stipends aren't guaranteed, but we ask so we can plan and prioritize where the need is real.</p>
-        </div>
-        <div class="field"><label for="j-6mo">what would make the next 6 months possible?</label><textarea id="j-6mo" name="next_6_months" rows="3" placeholder="the thing that would change what you can build in half a year."></textarea></div>
-        <div class="field"><label for="j-links">links &mdash; portfolio, social, website</label><textarea id="j-links" name="links" rows="2" placeholder="one per line is fine."></textarea></div>
-        <div class="field"><label for="j-else">anything else we should know?</label><textarea id="j-else" name="anything_else" rows="2"></textarea></div>
+        </details>
+
+        <details class="acc">
+          <summary>
+            <span class="acc-num">04</span>
+            <span class="acc-title">optional</span>
+            <span class="acc-hint">2 fields</span>
+            <span class="acc-arrow" aria-hidden="true">+</span>
+          </summary>
+          <div class="acc-body">
+            <div class="field"><label for="j-links">links &mdash; portfolio, social, website</label><textarea id="j-links" name="links" rows="2" placeholder="one per line is fine."></textarea></div>
+            <div class="field"><label for="j-else">anything else we should know?</label><textarea id="j-else" name="anything_else" rows="2"></textarea></div>
+          </div>
+        </details>
+
         <div class="submit-row">
           <button type="submit" class="submit">apply as a baker &rarr;</button>
           <div class="msg" id="join-msg" aria-live="polite"></div>
@@ -677,33 +730,85 @@ button{cursor:pointer;border:none;font-family:inherit;}
     </div>
   </section>
 
+
   <!-- ── support form ── -->
   <section class="formsec form-clay" id="support">
     <div class="wrap">
       <div class="kicker">support bakery</div>
       <h2>help young builders <em>build.</em></h2>
       <p class="lead">supporting bakery helps young builders cover the practical costs of building &mdash; tools, workspace, technology, materials, access, and in some cases opportunity-cost stipends.</p>
+
       <form class="the-form" id="support-form" action="https://formspree.io/f/xjgqjodq" method="POST" onsubmit="handleForm(event,'support-msg','support')">
         <input type="hidden" name="_subject" value="softerbread — support inquiry">
         <input type="hidden" name="form_source" value="bakery-support">
+
+        <div class="field">
+          <label>how would you like to support?</label>
+          <p class="helper" style="margin-top:0;margin-bottom:14px;">pick any that fit. we'll come back with the specifics.</p>
+          <div class="way-grid">
+            <label class="way-card">
+              <input type="checkbox" name="support_type" value="stipend" onchange="toggleStipend(this)">
+              <span class="way-mark"></span>
+              <span class="way-title">fund a stipend</span>
+              <span class="way-desc">cover the opportunity cost so a baker can focus on the build.</span>
+            </label>
+            <label class="way-card">
+              <input type="checkbox" name="support_type" value="tools">
+              <span class="way-mark"></span>
+              <span class="way-title">tools + technology</span>
+              <span class="way-desc">software licenses, ai systems, hosting, hardware, digital infrastructure.</span>
+            </label>
+            <label class="way-card">
+              <input type="checkbox" name="support_type" value="housing">
+              <span class="way-mark"></span>
+              <span class="way-title">room + board</span>
+              <span class="way-desc">housing, meals, or workspace so a baker has room to focus.</span>
+            </label>
+            <label class="way-card">
+              <input type="checkbox" name="support_type" value="mentor">
+              <span class="way-mark"></span>
+              <span class="way-title">mentor + advise</span>
+              <span class="way-desc">operational guidance, review circles, and time in your calendar.</span>
+            </label>
+            <label class="way-card">
+              <input type="checkbox" name="support_type" value="distribution">
+              <span class="way-mark"></span>
+              <span class="way-title">distribution + markets</span>
+              <span class="way-desc">customers, buyers, partners, or platform access for the ventures.</span>
+            </label>
+            <label class="way-card">
+              <input type="checkbox" name="support_type" value="sponsor">
+              <span class="way-mark"></span>
+              <span class="way-title">sponsor a full residence</span>
+              <span class="way-desc">underwrite one baker's residence end-to-end.</span>
+            </label>
+            <label class="way-card way-other">
+              <input type="checkbox" name="support_type" value="other">
+              <span class="way-mark"></span>
+              <span class="way-title">got other ideas</span>
+              <span class="way-desc">tell us how you'd like to work together — we're open.</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field slider-field" id="stipend-slider" style="display:none;">
+          <label for="s-amount">stipend contribution</label>
+          <div class="slider-wrap">
+            <div class="slider-value"><span id="s-amount-display">$500</span> <span class="slider-unit">/ month</span></div>
+            <input type="range" id="s-amount" name="stipend_amount" min="100" max="5000" step="100" value="500" oninput="updateStipend(this.value)">
+            <div class="slider-scale"><span>$100</span><span>$5,000+</span></div>
+          </div>
+          <p class="helper">stipends can be monthly or one-time — we'll follow up to align on cadence.</p>
+        </div>
+
         <div class="two">
           <div class="field"><label for="s-name">name</label><input type="text" id="s-name" name="name" required></div>
           <div class="field"><label for="s-email">email</label><input type="email" id="s-email" name="email" required></div>
         </div>
-        <div class="field"><label for="s-org">organization <span style="color:rgba(242,216,182,.55);text-transform:none;letter-spacing:.02em;font-style:italic;">(optional)</span></label><input type="text" id="s-org" name="organization"></div>
-        <div class="field">
-          <label>how would you like to support?</label>
-          <div class="checks">
-            <label><input type="checkbox" name="support_type" value="stipend"> fund a stipend</label>
-            <label><input type="checkbox" name="support_type" value="tools"> provide tools / software</label>
-            <label><input type="checkbox" name="support_type" value="housing"> provide room + board support</label>
-            <label><input type="checkbox" name="support_type" value="mentor"> mentor / advisory support</label>
-            <label><input type="checkbox" name="support_type" value="distribution"> distribution / market access</label>
-            <label><input type="checkbox" name="support_type" value="sponsor"> sponsor a residence</label>
-            <label><input type="checkbox" name="support_type" value="other"> other</label>
-          </div>
-        </div>
-        <div class="field"><label for="s-note">note</label><textarea id="s-note" name="note" rows="3" placeholder="anything we should know about how you'd like to work together."></textarea></div>
+        <div class="field"><label for="s-org">organization <span class="opt-tag">(optional)</span></label><input type="text" id="s-org" name="organization"></div>
+
+        <div class="field"><label for="s-note">note <span class="opt-tag">(optional)</span></label><textarea id="s-note" name="note" rows="3" placeholder="anything we should know about how you'd like to work together."></textarea></div>
+
         <div class="submit-row">
           <button type="submit" class="submit">support a baker &rarr;</button>
           <div class="msg" id="support-msg" aria-live="polite"></div>
@@ -711,6 +816,7 @@ button{cursor:pointer;border:none;font-family:inherit;}
       </form>
     </div>
   </section>
+
 
 </main>
 
@@ -744,6 +850,15 @@ button{cursor:pointer;border:none;font-family:inherit;}
 </footer>
 
 <script>
+
+function toggleStipend(cb){
+  var s = document.getElementById('stipend-slider');
+  s.style.display = cb.checked ? 'block' : 'none';
+}
+function updateStipend(v){
+  document.getElementById('s-amount-display').textContent = '$' + parseInt(v,10).toLocaleString();
+}
+
 function handleForm(e, msgId, type){
   var f = e.target;
   var msg = document.getElementById(msgId);
